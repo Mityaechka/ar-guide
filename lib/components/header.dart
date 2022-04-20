@@ -1,3 +1,4 @@
+import 'package:ar_guide/infrastructure/text_styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,13 +9,15 @@ class Header extends StatelessWidget {
   final bool showButton;
   final IconData icon;
   final Color color;
+  final void Function()? onCloseClick;
 
   const Header(
       {Key? key,
       required this.title,
       this.showButton = true,
       this.icon = Icons.arrow_back,
-      this.color = AppColors.orange})
+      this.color = AppColors.orange,
+      this.onCloseClick})
       : super(key: key);
 
   @override
@@ -45,8 +48,7 @@ class Header extends StatelessWidget {
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: TextStyle(
-            color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        style: TextStyles.h1(color: AppColors.white),
       ),
     );
   }
@@ -61,7 +63,7 @@ class Header extends StatelessWidget {
             minimumSize: Size.zero,
             padding: EdgeInsets.zero,
             primary: Colors.white),
-        onPressed: () {},
+        onPressed: onCloseClick,
       ),
     );
   }

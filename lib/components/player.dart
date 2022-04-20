@@ -1,53 +1,75 @@
 import 'package:ar_guide/components/header.dart';
-import 'package:ar_guide/infrastructure/app_colors.dart';
-import 'package:ar_guide/infrastructure/app_icons.dart';
-import 'package:ar_guide/infrastructure/app_styles.dart';
-import 'package:ar_guide/infrastructure/box_decorations.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ar_guide/components/item.dart';
+import 'package:ar_guide/components/items.dart';
+import 'package:ar_guide/components/player.dart';
+import 'package:ar_guide/components/player_hotbar.dart';
+import 'package:ar_guide/gen/assets.gen.dart';
+import 'package:ar_guide/models/item_model.dart';
+import 'package:ar_guide/state_managment/store.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../infrastructure/app_colors.dart';
+import '../infrastructure/app_icons.dart';
+import '../infrastructure/app_styles.dart';
+import '../infrastructure/box_decorations.dart';
 import '../infrastructure/text_styles.dart';
 
 class Player extends StatelessWidget {
-  const Player({Key? key}) : super(key: key);
+  final void Function() onCloseClick;
+
+  const Player({Key? key, required this.onCloseClick}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Header(
-          title: "",
-          icon: Icons.close,
-          color: AppColors.yellow,
-        ),
-        Container(
-            margin: EdgeInsets.only(top: 50),
-            child: Text("Отправляемся в путешествие!", style: TextStyles.h1())),
-        Container(
-          margin: EdgeInsets.only(top: 20),
-          child: Text(
-            "Небольшая информация о месте Небольшая информация о месте Небольшая информация о месте ",
-            style: TextStyles.p(),
-            textAlign: TextAlign.center,
+    return Consumer<Store>(builder: (context, store, child) {
+      return Column(
+        children: [
+          Header(
+            title: "",
+            icon: Icons.close,
+            onCloseClick: onCloseClick,
           ),
-        ),
-        Text("Глава 1. Часть 10", style: TextStyles.h2()),
-        buttons(),
-        Spacer(),
-        Container(
-          padding: EdgeInsets.all(15),
-          decoration: AppBoxDecorations.rounded(AppColors.yellow, 10),
-          child: Column(
-            children: [
-              Text("Транскрипция", style: TextStyles.h1()),
-              Text(
-                  "Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио ",
-                  style: TextStyles.p()),
-            ],
+          Container(
+              margin: EdgeInsets.only(top: 50),
+              child:
+                  Text("Отправляемся в путешествие!", style: TextStyles.h1())),
+
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            child: Text(
+              "Небольшая информация о месте Небольшая информация о месте Небольшая информация о месте ",
+              style: TextStyles.p(),
+              textAlign: TextAlign.center,
+            ),
           ),
-        )
-      ],
-    );
+          Container(
+            child:
+                Image.asset(store.selectedItem.image, width: 400, height: 400),
+          ),
+          Container(
+              child: Text(
+            "Глава 1. Часть 10",
+            style: TextStyles.h2(),
+            textAlign: TextAlign.left,
+          )),
+          buttons(),
+          //Spacer(),
+          Container(
+            padding: EdgeInsets.all(15),
+            decoration: AppBoxDecorations.rounded(AppColors.yellow, 10),
+            child: Column(
+              children: [
+                Text("Транскрипция", style: TextStyles.h1()),
+                Text(
+                    "Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио Весь текст из аудио ",
+                    style: TextStyles.p()),
+              ],
+            ),
+          )
+        ],
+      );
+    });
   }
 
   Widget buttons() {

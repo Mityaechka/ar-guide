@@ -1,52 +1,66 @@
+import 'package:ar_guide/gen/assets.gen.dart';
+import 'package:ar_guide/infrastructure/app_colors.dart';
+import 'package:ar_guide/infrastructure/text_styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Item extends StatelessWidget {
-  String name;
+  final String name;
+  final String text;
+  final String image;
+  final bool isSelect;
+  final void Function() onSelect;
 
-  Item({Key? key, required this.name}) : super(key: key);
+  Item(
+      {Key? key,
+      required this.name,
+      required this.text,
+      required this.image,
+      required this.isSelect,
+      required this.onSelect})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          dot(),
-          Expanded(
-            child: Column(
-              children: [
-                title(),
-                body(),
-              ],
-            ),
-          )
-        ],
+    return GestureDetector(
+      onTap: onSelect,
+      child: Container(
+        margin: const EdgeInsets.only(top: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            dot(),
+            Expanded(
+              child: Column(
+                children: [
+                  title(),
+                  body(),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 
-  Widget title(){
+  Widget title() {
     return Container(
-      padding: const EdgeInsets.only(bottom: 20,left: 10),
+      padding: const EdgeInsets.only(bottom: 20, left: 10),
       alignment: Alignment.centerLeft,
       child: Text(
         name,
-        style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 20),
+        style: TextStyles.h1(),
       ),
     );
   }
 
-  Widget body(){
+  Widget body() {
     return Container(
-      margin: const EdgeInsets.only(right: 20,left: 20),
+      margin: const EdgeInsets.only(right: 20, left: 20),
       width: double.infinity,
-      constraints: const BoxConstraints(minHeight: 100),
+      constraints: const BoxConstraints(minHeight: 200),
       decoration: BoxDecoration(
           border: Border.all(color: Colors.orange, width: 5),
           borderRadius: const BorderRadius.all(const Radius.circular(15))),
@@ -56,20 +70,18 @@ class Item extends StatelessWidget {
             flex: 6,
             child: Container(
               padding: const EdgeInsets.only(left: 15, top: 15, bottom: 15),
-              child: const Text(
-                "Игровое поле для игры в го, выполненное в виде толстого цельнодеревянного столика на невысоких ножках.",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15),
+              child: Text(
+                text,
+                style: TextStyles.h2(),
               ),
             ),
           ),
-          const Expanded(
+          Expanded(
             flex: 4,
-            child: Icon(
-              Icons.margin,
-              size: 150,
+            child: Image.asset(
+              image,
+              height: 125,
+              width: 125,
             ),
           )
         ],
@@ -77,14 +89,15 @@ class Item extends StatelessWidget {
     );
   }
 
-  Widget dot(){
+  Widget dot() {
     return Column(
       children: [
         Container(
           alignment: Alignment.topRight,
-          child: const Icon(
+          child: Icon(
             Icons.circle,
             size: 25,
+            color: isSelect ? AppColors.black : AppColors.orange,
           ),
         ),
       ],
