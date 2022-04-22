@@ -1,22 +1,20 @@
-import 'package:ar_guide/components/ItemDetails.dart';
-import 'package:ar_guide/components/header.dart';
-import 'package:ar_guide/components/item.dart';
-import 'package:ar_guide/components/items.dart';
-import 'package:ar_guide/components/player.dart';
-import 'package:ar_guide/components/player_hotbar.dart';
-import 'package:ar_guide/gen/assets.gen.dart';
+import 'package:ar_guide/infrastructure/navigation_controller.dart';
+import 'package:ar_guide/infrastructure/routes.dart';
+import 'package:ar_guide/models/navigation_data.dart';
+import 'package:ar_guide/routes/excursion_details_route.dart';
+import 'package:ar_guide/routes/main_route.dart';
 import 'package:ar_guide/state_managment/store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+
 import 'components/bottom_bar.dart';
+import 'components/header.dart';
+import 'components/player_hotbar.dart';
 import 'infrastructure/text_styles.dart';
 
-class Pages {
-  static final int Items = 0;
-  static final int ItemDetail = 1;
-}
-
 void main() {
+  //debugRepaintRainbowEnabled = true;
   runApp(ChangeNotifierProvider(
       create: (context) => Store(), child: MaterialApp(home: MyApp())));
 }
@@ -28,72 +26,67 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
-  PageController pageController = PageController(
-    initialPage: 0,
-    keepPage: true,
-  );
-  String title = "Главная";
-  int currentPage = Pages.Items;
+class _MyAppState extends State<MyApp> implements NavigationController {
+  String title = "";
+  Widget? route;
+  bool showBackButton = false;
 
-  bool get showBackButton {
-    return currentPage == Pages.ItemDetail;
+  List<NavigationData> navigationStack = [];
+
+  @override
+  void initState() {
+    navigate(Routes.excursionDetails(this, Store.excursions.first));
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Flutter Demo',
-        home: Scaffold(body: Consumer<Store>(
-          builder: (context, store, child) {
-            return Column(
+        home: Scaffold(body: Consumer<Store>(builder: (context, store, i) {
+          return SafeArea(
+            child: Column(
               children: [
                 Header(
                   title: title,
                   showButton: showBackButton,
-                  onCloseClick: backPress,
+                  onCloseClick: previous,
                 ),
-                Expanded(
-                    child: PageView(
-                  controller: pageController,
-                  onPageChanged: (index) {},
-                  children: [
-                    Items(
-                      items: store.items,
-                      onSelectItem: (item) {
-                        setState(() {
-                          title = item.name;
-                        });
-                        store.setSelectedItem(item);
-                        navigate(Pages.ItemDetail);
-                      },
-                    ),
-                    ItemDetails()
-                  ],
-                )),
-                PlayerHotbar(),
-                const BottomBar()
+                Expanded(child: route!),
+                if (store.selectedPart != null &&
+                    store.selectedExcursion != null)
+                  PlayerHotbar(),
+                BottomBar()
               ],
-            );
-          },
-        )));
+            ),
+          );
+        })));
   }
 
-  void navigate(int index) {
+  @override
+  void navigate(NavigationData data) {
+    navigationStack.add(data);
+    push(data);
+  }
+
+  void push(NavigationData data) {
     setState(() {
-      currentPage = index;
+      title = data.title;
+      route = data.route;
+      showBackButton = data.showBackButton;
     });
-
-    pageController.animateToPage(index,
-        duration: Duration(milliseconds: 250), curve: Curves.ease);
   }
 
-  void backPress() {
-    if (currentPage == Pages.ItemDetail) {
-      setState(() {
-        title = "Главная";
-      });
-      navigate(Pages.Items);
+  @override
+  void previous() {
+    navigationStack.remove(navigationStack.last);
+
+    if (navigationStack.isEmpty) {
+      push(Routes.main(this));
+      return;
     }
+
+    var data = navigationStack.last;
+    navigationStack.remove(data);
+    push(data);
   }
 }
