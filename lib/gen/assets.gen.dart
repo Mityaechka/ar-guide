@@ -13,17 +13,6 @@ class $AssetsImagesGen {
   /// File path: assets/images/goban.png
   AssetGenImage get goban => const AssetGenImage('assets/images/goban.png');
 
-  /// File path: assets/images/icon_menu.png
-  AssetGenImage get iconMenu =>
-      const AssetGenImage('assets/images/icon_menu.png');
-
-  /// File path: assets/images/icon_qr.png
-  AssetGenImage get iconQr => const AssetGenImage('assets/images/icon_qr.png');
-
-  /// File path: assets/images/icon_settings.png
-  AssetGenImage get iconSettings =>
-      const AssetGenImage('assets/images/icon_settings.png');
-
   /// File path: assets/images/sakura.png
   AssetGenImage get sakura => const AssetGenImage('assets/images/sakura.png');
 

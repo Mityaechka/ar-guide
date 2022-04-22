@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 
 class AppBoxDecorations {
-  static BoxDecoration rounded(Color color, double radius) {
+  static BoxDecoration rounded(
+      Color borderColor, Color backgroundColor, double radius,
+      {double width = 5}) {
     return BoxDecoration(
-        color: color,
-        border: Border.all(color: color),
+        color: backgroundColor,
+        border: Border.all(color: borderColor,width: width),
         borderRadius: BorderRadius.all(Radius.circular(radius)));
   }
 }

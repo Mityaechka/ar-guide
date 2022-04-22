@@ -13,9 +13,12 @@ class BottomBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          button(Assets.images.iconMenu.path, () {}),
-          button(Assets.images.iconQr.path, () {}),
-          button(Assets.images.iconSettings.path, () {}),
+          // button(Assets.images.iconMenu.path, () {}),
+          // button(Assets.images.iconQr.path, () {}),
+          // button(Assets.images.iconSettings.path, () {}),
+          button(Assets.images.goban.path, () {}),
+          button(Assets.images.goban.path, () {}),
+          button(Assets.images.goban.path, () {}),
         ],
       ),
     );
