@@ -1,5 +1,6 @@
 import 'package:ar_guide/components/player.dart';
 import 'package:ar_guide/infrastructure/text_styles.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -20,11 +21,9 @@ class PlayerHotbar extends StatelessWidget {
             context: context,
             isScrollControlled: true,
             builder: (BuildContext context) {
-              return FractionallySizedBox(
-                  heightFactor: 1,
-                  child: Player(
-                    onCloseClick: () => Navigator.pop(context),
-                  ));
+              return Player(
+                onCloseClick: () => Navigator.pop(context),
+              );
             },
           );
         },
@@ -41,7 +40,10 @@ class PlayerHotbar extends StatelessWidget {
             children: [
               Container(
                 alignment: Alignment.centerLeft,
-                child: Text(store.selectedExcursion!.name + ". " + store.selectedPart!.name),
+                child: Text(store.selectedExcursion!.name +
+                    ". " +
+                    store.selectedPart!.name,
+                style: TextStyles.h2(),),
               ),
               Container(
                 alignment: Alignment.centerRight,
@@ -55,11 +57,15 @@ class PlayerHotbar extends StatelessWidget {
                         ),
                         () {}),
                     button(
-                        Icon(
-                          store.isAudioPlaying ? Icons.pause : Icons.play_arrow,
-                          size: 40,
-                          color: AppColors.red,
-                        ),
+                        PlayerBuilder.isPlaying(
+                            player: store.player,
+                            builder: (context, value) {
+                              return Icon(
+                                value ? Icons.pause : Icons.play_arrow,
+                                size: 40,
+                                color: AppColors.red,
+                              );
+                            }),
                         store.changePlayState),
                     button(
                         const Icon(
@@ -75,12 +81,13 @@ class PlayerHotbar extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.only(left: 10, right: 10),
                   alignment: Alignment.bottomCenter,
-                  child: store.buildTotalPlayed((value) => LinearProgressIndicator(
-                    color: AppColors.red,
-                    minHeight: 2,
-                    value: value ,
-                    semanticsLabel: 'Linear progress indicator',
-                  )) ,
+                  child:
+                      store.buildTotalPlayed((value) => LinearProgressIndicator(
+                            color: AppColors.red,
+                            minHeight: 2,
+                            value: value,
+                            semanticsLabel: 'Linear progress indicator',
+                          )),
                 ),
               )
             ],
@@ -90,9 +97,9 @@ class PlayerHotbar extends StatelessWidget {
     });
   }
 
-  Widget button(Icon icon, VoidCallback? onPressed) {
+  Widget button(Widget widget, VoidCallback? onPressed) {
     return TextButton(
-      child: icon,
+      child: widget,
       style: TextButton.styleFrom(
           minimumSize: Size.zero,
           padding: EdgeInsets.zero,

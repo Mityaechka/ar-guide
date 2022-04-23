@@ -23,6 +23,7 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      constraints: BoxConstraints(minHeight: 50,maxHeight: 50),
       padding: EdgeInsets.only(
         top: 10,
         bottom: 10,

@@ -20,66 +20,70 @@ class Player extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<Store>(builder: (context, store, child) {
-      return SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Header(
-                title: "",
-                icon: Icons.close,
-                onCloseClick: onCloseClick,
-              ),
-              Container(
-                  margin: EdgeInsets.only(top: 50),
-                  child: Text("Отправляемся в путешествие!",
-                      style: TextStyles.h1())),
-
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                child: Text(
-                  "Небольшая информация о месте Небольшая информация о месте Небольшая информация о месте ",
-                  style: TextStyles.p(),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Container(
-                child: Image.asset(store.selectedExcursion!.image,
-                    width: 400, height: 400),
-              ),
-              Container(
-                  child: Text(
-                store.selectedPart!.name,
-                style: TextStyles.h2(),
-                textAlign: TextAlign.left,
-              )),
-              buttons(store),
-              store.player.builderRealtimePlayingInfos(
-                  builder: (context, RealtimePlayingInfos? infos){
-                    return PositionSeek(
-                      currentPosition: infos!.currentPosition,
-                      duration: infos.duration,
-                      seekTo: (to) {
-                        store.player.seek(to);
-                      },
-                    );
-                  }
-              ),
-              //Spacer(),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(15),
-                decoration: AppBoxDecorations.rounded(
-                    AppColors.yellow, AppColors.yellow, 10),
+      return FractionallySizedBox(
+        heightFactor: 0.96,
+        child: Column(
+          children: [
+            Header(
+              title: "",
+              icon: Icons.close,
+              onCloseClick: onCloseClick,
+            ),
+            Expanded (
+              child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Text("Транскрипция", style: TextStyles.h1()),
-                    Text(store.selectedPart!.transcription,
-                        style: TextStyles.p()),
+                    Container(
+                        margin: EdgeInsets.only(top: 50),
+                        child: Text("Отправляемся в путешествие!",
+                            style: TextStyles.h1())),
+                    Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: Text(
+                        "Небольшая информация о месте Небольшая информация о месте Небольшая информация о месте ",
+                        style: TextStyles.p(),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Container(
+                      child: Image.asset(store.selectedExcursion!.image,
+                          width: 400, height: 400),
+                    ),
+                    Container(
+                        child: Text(
+                          store.selectedPart!.name,
+                          style: TextStyles.h2(),
+                          textAlign: TextAlign.left,
+                        )),
+                    buttons(store),
+                    store.player.builderRealtimePlayingInfos(
+                        builder: (context, RealtimePlayingInfos? infos) {
+                          return PositionSeek(
+                            currentPosition: infos!.currentPosition,
+                            duration: infos.duration,
+                            seekTo: (to) {
+                              store.player.seek(to);
+                            },
+                          );
+                        }),
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(15),
+                      decoration: AppBoxDecorations.rounded(
+                          AppColors.yellow, AppColors.yellow, 10),
+                      child: Column(
+                        children: [
+                          Text("Транскрипция", style: TextStyles.h1()),
+                          Text(store.selectedPart!.transcription,
+                              style: TextStyles.h2()),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       );
     });
@@ -94,8 +98,12 @@ class Player extends StatelessWidget {
           color: AppColors.yellow,
         ),
         CircleButton(
-          child: AppIcons.white(
-              store.isAudioPlaying ? Icons.pause : Icons.play_arrow, 50),
+          child: PlayerBuilder.isPlaying(
+              player: store.player,
+              builder: (context, value) {
+                return AppIcons.white(
+                    value ? Icons.pause : Icons.play_arrow, 50);
+              }),
           onPressed: store.changePlayState,
         ),
         CircleButton(
@@ -130,7 +138,3 @@ class CircleButton extends StatelessWidget {
     );
   }
 }
-
-
-
-

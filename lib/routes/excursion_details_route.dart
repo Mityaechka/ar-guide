@@ -1,4 +1,3 @@
-import 'dart:html';
 
 import 'package:ar_guide/infrastructure/app_colors.dart';
 import 'package:ar_guide/infrastructure/text_styles.dart';
@@ -40,7 +39,6 @@ class ExcursionDetailsRoute extends StatelessWidget {
                     excursionPartContainer(part.name, part.description,
                         store.isExcursionPart(part), () {
                       store.setSelectedPart(part);
-                      store.startPlay(part);
                     }),
                 ],
               ),

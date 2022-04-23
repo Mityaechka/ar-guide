@@ -39,24 +39,22 @@ class Store extends ChangeNotifier {
         Assets.images.teaHouse.path,
         exampleParts)
   ];
+
   ExcursionModel? selectedExcursion;
   ExcursionPart? selectedPart;
 
   AssetsAudioPlayer player = AssetsAudioPlayer.newPlayer();
 
-  Store(){
+Store(){
+  player.playlistAudioFinished.listen((event) {
+    var currentIndex = selectedExcursion!.parts.indexOf(selectedPart!);
+    if(currentIndex == selectedExcursion!.parts.length - 1){
+      return;
+    }
 
-  }
-
-  bool get isAudioPlaying {
-    return player.isPlaying.value;
-  }
-
-  int get compelete {
-    if (!player.currentPosition.hasValue || !player.current.hasValue) return 0;
-
-    return player.currentPosition.value.inSeconds;
-  }
+    setSelectedPart(selectedExcursion!.parts[currentIndex + 1]);
+  });
+}
 
   PlayerBuilder buildTotalPlayed(Widget Function(double) onBuild) {
     return player.builderCurrentPosition(builder: (context, duration) {
@@ -66,7 +64,6 @@ class Store extends ChangeNotifier {
 
       final playing = player.current.value!.audio.duration;
       var value = ((duration.inSeconds / playing.inSeconds));
-      debugPrint(value.toString());
       return onBuild(value);
     });
   }
@@ -78,6 +75,7 @@ class Store extends ChangeNotifier {
 
   void setSelectedPart(ExcursionPart part) {
     selectedPart = part;
+    startPlay(part);
     notifyListeners();
   }
 
@@ -96,7 +94,7 @@ class Store extends ChangeNotifier {
   }
 
   void changePlayState() {
-    if (isAudioPlaying) {
+    if (player.isPlaying.value) {
       pause();
     } else {
       play();
