@@ -26,11 +26,15 @@ environment:
 # dependencies can be manually updated by changing the version numbers below to
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
+
+#flutter packages pub run build_runner build
+
 dependencies:
   flutter_redux:
   flutter:
     sdk: flutter
   assets_audio_player: ^3.0.4+1
+  arcore_flutter_plugin: ^0.0.11
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -43,6 +47,7 @@ dev_dependencies:
   flutter_gen_runner:
   provider:
   rxdart:
+
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -59,3 +64,4 @@ flutter:
   assets:
     - assets/images/
     - assets/audio/
+    - assets/ar/

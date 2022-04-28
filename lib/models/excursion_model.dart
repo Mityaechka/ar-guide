@@ -5,7 +5,10 @@ class ExcursionModel {
   String text;
   String image;
 
+  String arImage;
+  String arUri;
+
   List<ExcursionPart> parts;
 
-  ExcursionModel(this.name, this.text, this.image, this.parts);
+  ExcursionModel(this.name, this.text, this.image, this.parts, this.arImage, this.arUri);
 }

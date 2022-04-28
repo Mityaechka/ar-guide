@@ -27,17 +27,19 @@ class Store extends ChangeNotifier {
         "Гобан",
         "Игровое поле для игры в го, выполненное в виде толстого цельнодеревянного столика на невысоких ножках.",
         Assets.images.goban.path,
-        exampleParts),
-    ExcursionModel(
-        "Сакура",
-        "Японские вишни не плодоносят или дают мелкий, несъедобный плод.",
-        Assets.images.sakura.path,
-        exampleParts),
-    ExcursionModel(
-        "Тясицу",
-        "Тясицу — чайный домик, атрибут японской чайной церемонии.",
-        Assets.images.teaHouse.path,
-        exampleParts)
+        exampleParts,
+        Assets.ar.markBird.path,
+        "https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF-Binary/Duck.glb"),
+    // ExcursionModel(
+    //     "Сакура",
+    //     "Японские вишни не плодоносят или дают мелкий, несъедобный плод.",
+    //     Assets.images.sakura.path,
+    //     exampleParts),
+    // ExcursionModel(
+    //     "Тясицу",
+    //     "Тясицу — чайный домик, атрибут японской чайной церемонии.",
+    //     Assets.images.teaHouse.path,
+    //     exampleParts)
   ];
 
   ExcursionModel? selectedExcursion;
@@ -45,16 +47,16 @@ class Store extends ChangeNotifier {
 
   AssetsAudioPlayer player = AssetsAudioPlayer.newPlayer();
 
-Store(){
-  player.playlistAudioFinished.listen((event) {
-    var currentIndex = selectedExcursion!.parts.indexOf(selectedPart!);
-    if(currentIndex == selectedExcursion!.parts.length - 1){
-      return;
-    }
+  Store() {
+    player.playlistAudioFinished.listen((event) {
+      var currentIndex = selectedExcursion!.parts.indexOf(selectedPart!);
+      if (currentIndex == selectedExcursion!.parts.length - 1) {
+        return;
+      }
 
-    setSelectedPart(selectedExcursion!.parts[currentIndex + 1]);
-  });
-}
+      setSelectedPart(selectedExcursion!.parts[currentIndex + 1]);
+    });
+  }
 
   PlayerBuilder buildTotalPlayed(Widget Function(double) onBuild) {
     return player.builderCurrentPosition(builder: (context, duration) {

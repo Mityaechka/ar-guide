@@ -7,6 +7,19 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsArGen {
+  const $AssetsArGen();
+
+  /// File path: assets/ar/bird.fbx
+  String get birdFbx => 'assets/ar/bird.fbx';
+
+  /// File path: assets/ar/bird.gltf
+  String get birdGltf => 'assets/ar/bird.gltf';
+
+  /// File path: assets/ar/mark_bird.jpg
+  AssetGenImage get markBird => const AssetGenImage('assets/ar/mark_bird.jpg');
+}
+
 class $AssetsAudioGen {
   const $AssetsAudioGen();
 
@@ -42,6 +55,7 @@ class $AssetsImagesGen {
 class Assets {
   Assets._();
 
+  static const $AssetsArGen ar = $AssetsArGen();
   static const $AssetsAudioGen audio = $AssetsAudioGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
 }

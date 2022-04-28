@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
+import 'components/ar/test.dart';
 import 'components/bottom_bar.dart';
 import 'components/header.dart';
 import 'components/player_hotbar.dart';
@@ -35,7 +36,8 @@ class _MyAppState extends State<MyApp> implements NavigationController {
 
   @override
   void initState() {
-    navigate(Routes.excursionDetails(this, Store.excursions.first));
+    //navigate(Routes.excursionDetails(this, Store.excursions.first));
+    navigate(Routes.ar(this));
   }
 
   @override
